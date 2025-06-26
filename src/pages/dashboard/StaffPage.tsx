@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
 import {
     Box,
-    Drawer,
-    List,
-    ListItem,
-    ListItemText,
+    Paper,
     Typography,
     TextField,
     Button,
     MenuItem,
     Grid,
-    Paper,
 } from '@mui/material';
+import { useAppDispatch } from '../../redux/hooks';
+import { createStaff } from '../../redux/staffSlice';
+// import { addStaff } from '../../redux/staffSlice';
+
 const StaffPage: React.FC = () => {
+
     const roles = ['Doctor', 'Nurse', 'Technician'];
-    const shifts = ['Morning', 'Afternoon', 'Night'];
+    const shifts = ['morning', 'afternoon', 'night'];
+    const dispatch = useAppDispatch();
+
     const [formData, setFormData] = useState({
         name: '',
         role: '',
         staffId: '',
-        shift: '',
+        shiftPreference: '',
+        contactNumber: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +33,14 @@ const StaffPage: React.FC = () => {
 
     const handleSubmit = () => {
         console.log('Staff Added:', formData);
-        setFormData({ name: '', role: '', staffId: '', shift: '' });
+        dispatch(createStaff(formData));
+        setFormData({
+            name: '',
+            role: '',
+            staffId: '',
+            shiftPreference: '',
+            contactNumber: '',
+        });
     };
 
     return (
@@ -78,8 +89,8 @@ const StaffPage: React.FC = () => {
                             select
                             fullWidth
                             label="Shift"
-                            name="shift"
-                            value={formData.shift}
+                            name="shiftPreference"
+                            value={formData.shiftPreference}
                             onChange={handleChange}
                         >
                             {shifts.map((option) => (
@@ -90,7 +101,26 @@ const StaffPage: React.FC = () => {
                         </TextField>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button variant="contained" color="primary" onClick={handleSubmit}>
+                        <TextField
+                            fullWidth
+                            label="Contact Number"
+                            name="contactNumber"
+                            value={formData.contactNumber}
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSubmit}
+                            disabled={
+                                !formData.name ||
+                                !formData.role ||
+                                !formData.staffId ||
+                                !formData.shiftPreference
+                            }
+                        >
                             Add Staff
                         </Button>
                     </Grid>
@@ -100,4 +130,4 @@ const StaffPage: React.FC = () => {
     );
 };
 
-export default StaffPage
+export default StaffPage;
