@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import authSlice from "./slices/authSlice";
+
+import staffSlice from './staffSlice'
 export const store = configureStore({
     reducer: {
-        // home: authSlice,
+        staffs: staffSlice,
     },
 });
 export type RootState = ReturnType<typeof store.getState>;
