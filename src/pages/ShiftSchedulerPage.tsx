@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { API_ENDPOINT } from "../Config/configDetails";
 import {
+    Box,
+    Button,
     Paper,
     Table,
     TableBody,
@@ -10,11 +12,38 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
+import ShiftSchedulerDialog from "../Components/ShiftSchedulerDialog";
+import axios from "axios";
 
 const ShiftSchedulerPage = () => {
+
+
+ const [open, setOpen] = React.useState(false);
+    const handleSave = (data:any) => {
+        // Logic to save the shift data
+        try{
+            const response = axios.post(`${API_ENDPOINT}api/shift`, data);
+            // Assuming the response is successful
+            console.log("Shift data to be saved:", data);
+
+            if (!response ) {
+                throw new Error("Failed to save shift data");
+            }
+            console.log("Shift data saved successfully:", data);
+        }catch(error) {
+            console.error("Error saving shift data:", error);
+        }
+        // Close the dialog after saving
+        setOpen(false); 
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
     const fetchShifts = async () => {
         try {
-            const response = await fetch(`${API_ENDPOINT}api/shifts`);
+            const response = await fetch(`${API_ENDPOINT}api/shift`);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -40,9 +69,14 @@ const ShiftSchedulerPage = () => {
 
     return (
         <div style={{ padding: 24 }}>
+            <Box style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: '20px'}}>
             <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
                 Shift Schedule
             </Typography>
+            <Button onClick={()=>setOpen((prev) => !prev)} variant="contained" color="primary" sx={{ borderRadius: 2,fontWeight:'bold', padding: '10px 20px', color:'black' }}>
+                    Create Shift
+            </Button>
+            </Box>
             <TableContainer
                 component={Paper}
                 sx={{ border: "1px solid #ddd", borderRadius: 2, boxShadow: 3 }}
@@ -72,6 +106,7 @@ const ShiftSchedulerPage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <ShiftSchedulerDialog open={open} onClose={handleClose} onSave={handleSave}/>
         </div>
     );
 };
