@@ -98,7 +98,9 @@ const StaffPage: React.FC = () => {
             </TextField>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
+            <Button variant="contained" color="primary" onClick={handleSubmit}
+            disabled={!formData.name.trim() || !formData.role.trim() || !formData.staffId.trim() || !formData.shift.trim()}
+            >
               Add Staff
             </Button>
           </Grid>
