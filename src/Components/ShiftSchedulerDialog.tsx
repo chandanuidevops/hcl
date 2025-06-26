@@ -26,7 +26,7 @@ const ShiftSchedulerDialog: React.FC<ShiftSchedulerDialogProps> = ({ open, onClo
 
     const handleSave = () => {
         if (date && shift && staff) {
-            onSave({ date, shift, staff });
+            // onSave({ date, shift, staff });
             handleClose();
         }
     };
@@ -89,7 +89,7 @@ const ShiftSchedulerDialog: React.FC<ShiftSchedulerDialogProps> = ({ open, onClo
                 <Button onClick={handleClose} color="secondary">
                     Cancel
                 </Button>
-                <Button onClick={handleSave} variant="contained" color="primary">
+                <Button onClick={handleSave} variant="contained" color="primary" disabled={!date || !shift || !staff}>
                     Save
                 </Button>
             </DialogActions>

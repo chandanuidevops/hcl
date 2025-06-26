@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../Config/configDetails";
 import {
     Box,
     Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
     Paper,
+    Select,
+    SelectChangeEvent,
     Table,
     TableBody,
     TableCell,
@@ -17,8 +22,17 @@ import axios from "axios";
 
 const ShiftSchedulerPage = () => {
 
-
+ const [view, setView] = useState("daily");
  const [open, setOpen] = React.useState(false);
+
+
+ 
+    const handleChange = (event: SelectChangeEvent) => {
+        setView(event.target.value);
+        console.log("View changed to:", event.target.value);
+    };
+
+    
     const handleSave = (data:any) => {
         // Logic to save the shift data
         try{
@@ -77,6 +91,18 @@ const ShiftSchedulerPage = () => {
                     Create Shift
             </Button>
             </Box>
+            <FormControl sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+            <InputLabel id="view-label">View</InputLabel>
+            <Select
+                labelId="view-label"
+                value={view}
+                label="View"
+                onChange={handleChange}
+            >
+                <MenuItem value="daily">Daily</MenuItem>
+                <MenuItem value="weekly">Weekly</MenuItem>
+            </Select>
+        </FormControl>
             <TableContainer
                 component={Paper}
                 sx={{ border: "1px solid #ddd", borderRadius: 2, boxShadow: 3 }}
