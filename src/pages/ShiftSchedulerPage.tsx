@@ -92,7 +92,6 @@ const ShiftSchedulerPage = () => {
             </Button>
             </Box>
             <FormControl sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-            <InputLabel id="view-label">View</InputLabel>
             <Select
                 labelId="view-label"
                 value={view}
