@@ -65,13 +65,13 @@ const AttendanceDetailDialog = () => {
                 <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
                     <DialogTitle>Mark Attendance</DialogTitle>
                     <DialogContent>
-                        <Paper sx={{ height: 400, width: "100%" }}>
+                        {/* <Paper sx={{ height: 400, width: "100%" }}> */}
                             <DataGrid
                                 rows={rows}
                                 columns={columns}
                                 autoHeight
                             />
-                        </Paper>
+                        {/* </Paper> */}
                     </DialogContent>
                     <DialogActions>
                         {/* <Button onClick={handleClose}>Cancel</Button>

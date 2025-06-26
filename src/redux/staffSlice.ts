@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createHandledThunk } from "../utils/apiHandler";
-import { addStaffs } from "../middleware/staffService"; // Staff API
 import { loginAPI } from "../middleware/authServices"; // Login API
+import { addStaffs } from "../middleware/staffService";
+import { createHandledThunk } from "../utils/apiHandler";
+// import { createHandledThunk } from "../utils/apiHandler";
 
 // ======================= Types =======================
 export interface Staff {

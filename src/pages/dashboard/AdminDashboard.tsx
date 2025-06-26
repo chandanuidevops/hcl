@@ -28,6 +28,7 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { text: 'Attendance', path: '/attendance' },
     { text: 'Staffs', path: '/staff' },
+    { text: 'Shifts Schedule', path: '/shifts' },
   ];
 
   return (

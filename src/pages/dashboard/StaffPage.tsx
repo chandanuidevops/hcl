@@ -9,7 +9,7 @@ import {
     Grid,
 } from '@mui/material';
 import { useAppDispatch } from '../../redux/hooks';
-import { createStaff } from '../../redux/redux/staffSlice';
+import { createStaff } from '../../redux/staffSlice';
 // import { addStaff } from '../../redux/staffSlice';
 
 const StaffPage: React.FC = () => {
