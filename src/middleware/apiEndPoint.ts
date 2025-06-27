@@ -1,4 +1,4 @@
-import { PostApi } from "./apiConfig";
+import { PostApi, GetApi } from "./apiConfig";
 import { MAIN_URL } from "./apiConstants";
 
 // Define types for the function parameters
@@ -30,5 +30,27 @@ export const postToEndpoint = async <
         url += `?${queryString}`;
     }
 
-    return await PostApi<TResponse>({ url, body });
+    return await PostApi<TResponse>({ url, });
 };
+interface GetToEndpointParams {
+    endpoint: string;
+    query?: Record<string, string | number | boolean>;
+}
+
+export const getToEndpoint = async ({ endpoint, query }: GetToEndpointParams): Promise<any> => {
+    let url = `${MAIN_URL}${endpoint}`;
+
+    if (query) {
+        const queryParams = new URLSearchParams(
+            Object.entries(query).reduce((acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            }, {} as Record<string, string>)
+        ).toString();
+
+        url += `?${queryParams}`;
+    }
+
+    return await GetApi({ url });
+};
+

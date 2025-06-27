@@ -9,7 +9,8 @@ import {
     Grid,
 } from '@mui/material';
 import { useAppDispatch } from '../../redux/hooks';
-import { createStaff } from '../../redux/staffSlice';
+import { createStaff, } from '../../redux/staffSlice';
+import StaffTable from './StaffTable';
 // import { addStaff } from '../../redux/staffSlice';
 
 const StaffPage: React.FC = () => {
@@ -34,6 +35,7 @@ const StaffPage: React.FC = () => {
     const handleSubmit = () => {
         console.log('Staff Added:', formData);
         dispatch(createStaff(formData));
+
         setFormData({
             name: '',
             role: '',
@@ -126,6 +128,7 @@ const StaffPage: React.FC = () => {
                     </Grid>
                 </Grid>
             </Paper>
+            <StaffTable />
         </Box>
     );
 };

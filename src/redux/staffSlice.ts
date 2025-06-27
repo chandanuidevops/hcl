@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { loginAPI } from "../middleware/authServices"; // Login API
-import { addStaffs } from "../middleware/staffService";
 import { createHandledThunk } from "../utils/apiHandler";
-// import { createHandledThunk } from "../utils/apiHandler";
+import { addStaffs, searchStaff } from "../middleware/staffService";
 
 // ======================= Types =======================
 export interface Staff {
@@ -16,33 +14,21 @@ export interface Staff {
 interface StaffState {
     staffList: Staff[];
     isSubmitting: boolean;
+    isSearching: boolean;
 }
 
-interface LoginResponse {
-    data: {
-        token: string;
-        [key: string]: any;
-    };
-}
-
-interface LoginPayload {
-    username: string;
-    password: string;
+interface SearchQuery {
+    name?: string;
+    role?: string;
+    staffId?: string;
+    shiftPreference?: string;
+    contactNumber?: string;
+    [key: string]: string | undefined;
 }
 
 // ======================= Thunks =======================
 
-// 👉 Thunk for login (auth)
-export const loginUser = createHandledThunk<LoginPayload, { body: LoginPayload }, LoginResponse>(
-    "auth/login",
-    loginAPI,
-    {
-        argsBuilder: (payload) => ({ body: payload }),
-        onError: (error) => (error as any)?.response?.data?.data,
-    }
-);
-
-// 👉 Thunk for creating staff
+// Create Staff
 export const createStaff = createHandledThunk<Staff, { body: Staff }, any>(
     "staff/create",
     addStaffs,
@@ -55,18 +41,32 @@ export const createStaff = createHandledThunk<Staff, { body: Staff }, any>(
     }
 );
 
+// Search Staff
+export const searchStaffThunk = createHandledThunk<SearchQuery, { query: SearchQuery }, Staff[]>(
+    "staff/search",
+    searchStaff,
+    {
+        argsBuilder: (query) => ({ query }),
+        onError: (error) => (error as any)?.response?.data?.message || "Search failed",
+    }
+);
+
 // ======================= Initial State =======================
 const initialState: StaffState = {
     staffList: [],
     isSubmitting: false,
-
+    isSearching: false,
 };
 
 // ======================= Slice =======================
 const staffSlice = createSlice({
     name: "staff",
     initialState,
-    reducers: {},
+    reducers: {
+        clearStaffList: (state) => {
+            state.staffList = [];
+        },
+    },
     extraReducers: (builder) => {
         // Create Staff
         builder
@@ -81,20 +81,22 @@ const staffSlice = createSlice({
                 state.isSubmitting = false;
             });
 
-        // Login (if you want to handle it in this slice, otherwise move it to authSlice)
+        // Search Staff
         builder
-            .addCase(loginUser.pending, (state) => {
-                state.isSubmitting = true;
+            .addCase(searchStaffThunk.pending, (state) => {
+                state.isSearching = true;
             })
-            .addCase(loginUser.fulfilled, (state) => {
-                state.isSubmitting = false;
+            .addCase(searchStaffThunk.fulfilled, (state, action: PayloadAction<Staff[]>) => {
+                state.isSearching = false;
+                state.staffList = action.payload
             })
-            .addCase(loginUser.rejected, (state) => {
-                state.isSubmitting = false;
+            .addCase(searchStaffThunk.rejected, (state) => {
+                state.isSearching = false;
+                state.staffList = [];
             });
     },
 });
 
 // ======================= Exports =======================
-export const { } = staffSlice.actions;
+export const { clearStaffList } = staffSlice.actions;
 export default staffSlice.reducer;
